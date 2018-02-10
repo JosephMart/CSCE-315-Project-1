@@ -1,0 +1,7 @@
+```sql
+CREATE TABLE `josephmart`.`PeopleCounts` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, 
+	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+```
