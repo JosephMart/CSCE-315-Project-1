@@ -30,6 +30,7 @@
                     </thead>
                     <tbody>
                         <?php
+                            # Display table data
                             while($row = $rs->fetch(PDO::FETCH_ASSOC))
                             {
                                 echo("<tr><td>".$row['id']."</td><td>".$row['time']."</td><td>\n");

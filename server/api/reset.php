@@ -2,6 +2,11 @@
     include('../logger.php');
     $logger = new Logger();
 
+    # Return 403 if response if no secret or not a DELETE request
+    if ($_SERVER['REQUEST_METHOD'] != 'DELETE') {
+        http_response_code(403);
+    }
+
     $secret = (int) $_POST['secret'];
 
     if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
@@ -19,8 +24,7 @@
 
         // Respond to request
         $data = [
-            "status" => "success",
-            "query" => $sql
+            "status" => "success"
         ];
 
         $logger->info('data has been reset');

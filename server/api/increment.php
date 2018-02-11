@@ -2,10 +2,12 @@
     include('../logger.php');
     $logger = new Logger();
 
-    if (!array_key_exists('secret', $_POST)) {
+    # Return 403 if response if no secret or not a POST request
+    if (!array_key_exists('secret', $_POST) || $_SERVER['REQUEST_METHOD'] != 'POST') {
         http_response_code(403);
     }
 
+    # Get secret in request
     $secret = (int) $_POST['secret'];
 
     if ($secret == 69) {
@@ -13,14 +15,13 @@
         include('../CommonMethods.php');
         $COMMON = new Common($debug);
 
-        // Increpent PeopleCounts
+        // Increment PeopleCounts
         $sql = "INSERT INTO `josephmart`.`PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
         $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
-        // Respond to post request
+        // Respond to request
         $data = [
-            "status" => "success",
-            "query" => $sql
+            "status" => "success"
         ];
 
         header('Content-Type: application/json');
