@@ -11,4 +11,4 @@ echo "Removing Old Files: $server_project_path"
 ssh $hostname "rm -rf $server_project_path; mkdir $server_project_path"
 
 echo "Moving files to server: $server_project_path"
-scp $PROJECT_FILES "$fullpath"
+scp -r $PROJECT_FILES "$fullpath"

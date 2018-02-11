@@ -1,9 +1,16 @@
 <?php
+    include('../logger.php');
+    $logger = new Logger();
+
+    if (!array_key_exists('secret', $_POST)) {
+        http_response_code(403);
+    }
+
     $secret = (int) $_POST['secret'];
 
     if ($secret == 69) {
         $debug = false;
-        include('CommonMethods.php');
+        include('../CommonMethods.php');
         $COMMON = new Common($debug);
 
         // Increpent PeopleCounts

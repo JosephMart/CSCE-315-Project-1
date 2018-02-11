@@ -4,6 +4,7 @@ class Common
 {
     var $conn;
     var $debug;
+    var $logger;
 
     var $db="database.cse.tamu.edu";
     var $dbname="josephmart";
@@ -13,6 +14,8 @@ class Common
     function Common($debug)
     {
         $this->debug = $debug;
+        include('./logger.php');
+        $this->logger=new Logger();
         $rs = $this->connect($this->user); // db name really here
         return $rs;
     }
@@ -35,6 +38,8 @@ class Common
     function executeQuery($sql, $filename) // execute query
     {
         if($this->debug == true) { echo("$sql <br>\n"); }
+        $this->logger->info($sql);
+        
         $rs = $this->conn->query($sql) or die("Could not execute query '$sql' in $filename");
         return $rs;
     }

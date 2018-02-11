@@ -16,7 +16,7 @@
                 $COMMON = new Common($debug);
 
                 // Select all for display
-                $sql = "select * from `PeopleCounts`";
+                $sql = "SELECT * FROM `PeopleCounts`";
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             ?>
             <h1>People</h1>
