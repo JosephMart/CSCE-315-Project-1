@@ -1,6 +1,6 @@
 import requests
 
-from constants import SERVER_API, ENDPOINTS
+from Constants import SERVER_API, ENDPOINTS
 
 def test() -> None:
 	"""Run Test cases on reset and increment"""

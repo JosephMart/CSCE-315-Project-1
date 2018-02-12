@@ -1,11 +1,10 @@
 import unittest
-
 import sys
 sys.path.append(sys.path[0] + "/..")
+from Api import reset, increment
 
-from api import reset, increment
-
-class TestApiPy(unittest.TestCase):
+class TestApi(unittest.TestCase):
+    '''Test Api Module'''
 
     def setUp(self):
         pass

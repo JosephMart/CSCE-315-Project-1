@@ -1,32 +1,43 @@
 <?php
-    include('../logger.php');
-    $logger = new Logger();
+/*****************************************
+** File:    Increment.php
+** Project: CSCE 315 Project 1, Spring 2018
+**
+** Hit this endpoint with a POST request with secret
+** to increment PeopleCount by 1
+**
+***********************************************/
 
-    # Return 403 if response if no secret or not a POST request
-    if (!array_key_exists('secret', $_POST) || $_SERVER['REQUEST_METHOD'] != 'POST') {
-        http_response_code(403);
-    }
+# Setup the logger
+include('../Logger.php');
+$logger = new Logger();
 
-    # Get secret in request
-    $secret = (int) $_POST['secret'];
+# Return 403 if response if no secret or not a POST request
+if (!array_key_exists('secret', $_POST) || $_SERVER['REQUEST_METHOD'] != 'POST') {
+    http_response_code(403);
+}
 
-    if ($secret == 69) {
-        $debug = false;
-        include('../CommonMethods.php');
-        $COMMON = new Common($debug);
+# Get secret in request
+$secret = (int) $_POST['secret'];
 
-        // Increment PeopleCounts
-        $sql = "INSERT INTO `josephmart`.`PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
-        $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+if ($secret == 69) {
+    # Setup CommonMethods for query execution
+    $debug = false;
+    include('../CommonMethods.php');
+    $COMMON = new Common($debug);
 
-        // Respond to request
-        $data = [
-            "status" => "success"
-        ];
+    // Increment PeopleCounts
+    $sql = "INSERT INTO `josephmart`.`PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
-        header('Content-Type: application/json');
-        echo json_encode($data);
-    } else {
-        http_response_code(403);
-    }
+    // Respond to request
+    $data = [
+        "status" => "success"
+    ];
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+} else {
+    http_response_code(406);
+}
 ?>

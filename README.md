@@ -45,7 +45,7 @@ Main page `index.php` is a table of all data.
 
 Increment count table by 1
 ```bash
-curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://projects.cse.tamu.edu/josephmart/p1/api/increment.php
+curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://projects.cse.tamu.edu/josephmart/p1/api/Increment.php
 ```
 
 ### Reset Table
@@ -53,5 +53,5 @@ curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST
 This will clear all data in table and set increment back to 1.
 
 ```bash
-curl -X DELETE http://projects.cse.tamu.edu/josephmart/p1/api/reset.php
+curl -X DELETE http://projects.cse.tamu.edu/josephmart/p1/api/Reset.php
 ```
