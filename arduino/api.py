@@ -1,6 +1,6 @@
 import requests
-
-from Constants import SERVER_API, ENDPOINTS
+import unittest
+from constants import SERVER_API, ENDPOINTS
 
 def test() -> None:
 	"""Run Test cases on reset and increment"""
@@ -41,5 +41,27 @@ def increment(printResponse: bool = False) -> None:
 	if printResponse: print(response.text)
 	return response.text
 
+
+
+class TestApi(unittest.TestCase):
+	'''Test Api Module'''
+
+	def setUp(self):
+		pass
+
+	def testRest(self):
+		'''
+		Test Reset Endpoint from Arduino Python Code
+		'''
+		self.assertEqual(reset(), '{"status":"success"}')
+	
+	def testIncrement(self):
+		'''
+		Test Increment Endpoint from Arduino Python Code
+		'''
+		self.assertEqual(increment(), '{"status":"success"}')
+
+
 if __name__ == '__main__':
 	test()
+	unittest.main(verbosity=2)

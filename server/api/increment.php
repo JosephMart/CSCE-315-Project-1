@@ -9,7 +9,7 @@
 ***********************************************/
 
 # Setup the logger
-include('../Logger.php');
+include('../logger.php');
 $logger = new Logger();
 
 # Return 403 if response if no secret or not a POST request

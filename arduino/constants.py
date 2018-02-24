@@ -5,6 +5,6 @@ SERVER_API = 'http://projects.cse.tamu.edu/josephmart/p1/api'
 
 # Endpoints on server
 ENDPOINTS = {
-	'INCREMENT': '/Increment.php',
-	'RESET': '/Reset.php'
+	'INCREMENT': '/increment.php',
+	'RESET': '/reset.php'
 }

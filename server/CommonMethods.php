@@ -14,7 +14,7 @@ class Common
     function Common($debug)
     {
         $this->debug = $debug;
-        include('./Logger.php');
+        include('./logger.php');
         $this->logger=new Logger();
         $rs = $this->connect($this->user); // db name really here
         return $rs;
