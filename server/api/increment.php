@@ -27,7 +27,7 @@ if ($secret == 69) {
     $COMMON = new Common($debug);
 
     // Increment PeopleCounts
-    $sql = "INSERT INTO `josephmart`.`PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
+    $sql = "INSERT INTO `PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
     $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
     // Respond to request

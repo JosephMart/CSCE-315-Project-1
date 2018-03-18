@@ -1,6 +1,5 @@
 import time
 import Api
-
 import numpy
 
 from SerialMonitor import SerialMonitor

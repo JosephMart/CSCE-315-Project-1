@@ -1,6 +1,8 @@
 #!/bin/bash
+set -e
 
-PROJECT_FILES=("../server/*")
+PROJECT_FILES=$1
+echo "Files to move: $PROJECT_FILES"
 read -p "netid: " netid
 
 server_project_path="/home/ugrads/${netid:0:1}/$netid/web_project/p1"

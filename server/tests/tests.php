@@ -28,7 +28,7 @@ $alter = 'ALTER TABLE `PeopleCounts` AUTO_INCREMENT = 1';
 $rs = $COMMON->executeQuery($alter, $_SERVER["SCRIPT_NAME"]);
 
 // Check count is 0
-$sql = "SELECT COUNT(*) FROM `josephmart`.`PeopleCounts`";
+$sql = "SELECT COUNT(*) FROM `PeopleCounts`";
 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 $count = $rs->fetchColumn();
 
@@ -37,12 +37,12 @@ if ($count == 0) {
 }
 
 for ($x = 0; $x < 10; $x++) {
-    $sql = "INSERT INTO `josephmart`.`PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
+    $sql = "INSERT INTO `PeopleCounts` (`id`, `time`) VALUES (NULL, CURRENT_TIMESTAMP)";
     $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 }
 
 // Check count is 10
-$sql = "SELECT COUNT(*) FROM `josephmart`.`PeopleCounts`";
+$sql = "SELECT COUNT(*) FROM `PeopleCounts`";
 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 $count = $rs->fetchColumn();
 

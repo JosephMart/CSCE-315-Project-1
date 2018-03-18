@@ -23,11 +23,11 @@ include('../CommonMethods.php');
 $COMMON = new Common($debug);
 
 // Delete users
-$sql = "DELETE FROM `josephmart`.`PeopleCounts`";
+$sql = "DELETE FROM `PeopleCounts`";
 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
 // Reset AutoIncrement
-$alter = 'ALTER TABLE `josephmart`.`PeopleCounts` AUTO_INCREMENT = 1';
+$alter = 'ALTER TABLE `PeopleCounts` AUTO_INCREMENT = 1';
 $rs = $COMMON->executeQuery($alter, $_SERVER["SCRIPT_NAME"]);
 
 // Respond to request

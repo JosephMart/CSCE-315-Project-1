@@ -20,7 +20,7 @@
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
                 # Count number of items in PeopleCounts
-                $countSql = 'SELECT COUNT(*) from `josephmart`.`PeopleCounts`';
+                $countSql = 'SELECT COUNT(*) from `PeopleCounts`';
                 $countRs = $COMMON->executeQuery($countSql, $_SERVER["SCRIPT_NAME"]);
                 $count = $countRs->fetchColumn();
             ?>
