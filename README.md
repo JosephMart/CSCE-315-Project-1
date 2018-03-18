@@ -2,29 +2,39 @@
 
 Currently located at [here](http://projects.cse.tamu.edu/josephmart/p1/)
 
-## Arduino
-### Setup
+Due to not being able to install PHP packages on TAMU server there are
+three places to change data to run on your server. They are commented
+with `# USER SPECIFIC DATA`.
 
-Create virtual enviroment and acivate it.
+* `CommonMethods.php`
+	* $dbname
+	* $user
+	* $pass
+* `logger.php`
+	* $logDirectory (may need to chmod 777 this file once it is created the frist time)
+* `Constants.py`
+	* SERVER_API
+
+## Dependencies
+
+Make sure to have the following items installed
+
+* [Python 3.6.4](https://www.python.org/downloads/release/python-364/)
+* [pip 9.0.2](https://pypi.python.org/pypi/pip)
+* Be able to run makefiles (bash or cygwin?)
+### Makefile Commands
+Not sure which of these will work on Windows but you can open the makefile and find the
+appropriate command and run the Windows equivalent.
 
 ```bash
-cd arduino
-python3 -m venv venv
-source venv/bin/activate
-```
-
-Install dependencies
-```bash
-pip3 install -r requirements.txt
-```
-
-### Tests
-
-## Api
-```bash
-cd arduino
-source venv/bin/activate
-python3 tests/test_api_unittest.py
+make all # create venv and install packages
+make init_venv # create venv
+make deps # install dependencies in requirements.txt
+make freeze # freeze dependencies to requirements.txt
+make clean_venv # remove venv
+make run # run python arduino code
+make test_python # run python unit tests
+make deploy # Deploy server code to TAMU server
 ```
 
 ## Webserver
@@ -39,13 +49,13 @@ CREATE TABLE `NET_ID`.`PeopleCounts` (
 ```
 
 ### View
-Main page `index.php` is a table of all data.
+Main page `web_project/p1/index.php` is a table of all data.
 
 ### Increment
 
 Increment count table by 1
 ```bash
-curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://projects.cse.tamu.edu/josephmart/p1/api/Increment.php
+curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://projects.cse.tamu.edu/NETID/p1/api/increment.php
 ```
 
 ### Reset Table
@@ -53,5 +63,5 @@ curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST
 This will clear all data in table and set increment back to 1.
 
 ```bash
-curl -X DELETE http://projects.cse.tamu.edu/josephmart/p1/api/Reset.php
+curl -X DELETE http://projects.cse.tamu.edu/NETID/p1/api/reset.php
 ```

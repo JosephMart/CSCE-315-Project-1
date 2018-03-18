@@ -7,6 +7,7 @@ class Common
     var $logger;
 
     var $db="database.cse.tamu.edu";
+    # USER SPECIFIC DATA
     var $dbname="josephmart";
     var $user="josephmart";
     var $pass="martinsen";
