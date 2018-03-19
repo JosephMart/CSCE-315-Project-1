@@ -18,10 +18,10 @@ require_once("./modules/phpChart_Lite/conf.php");
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="index.php">Table</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="charts.php">Charts</a>
                     </li>
                     <li class="nav-item">
