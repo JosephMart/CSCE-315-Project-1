@@ -8,7 +8,7 @@ import pytz as pytz
 from pymata_aio.pymata3 import PyMata3
 
 import Api
-from Constants import LOG_CONFIG, TRIG_PIN_INDEX, DISTANCE_INDEX
+from Constants import LOG_CONFIG, TRIG_PIN_INDEX, DISTANCE_INDEX, NUM_SENSORS
 
 logging.basicConfig(**LOG_CONFIG)
 log = logging.getLogger(__name__)
@@ -223,7 +223,5 @@ class UltraSonic:
         self.timestamps.append(datetime.now(pytz.utc))
 
         # Only keep MAX_TIMESTAMPS in scope
-        while len(self.timestamps) > self.MAX_TIMESTAMPS or (now - self.timestamps[0]) > self.ACCEPTABLE_TIME_DELTA:
-            if len(self.timestamps) > 1:
-                self.timestamps.pop(0)
+        self.timestamps = [self.timestamps[-1]]
         self.running = False
