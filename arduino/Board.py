@@ -89,8 +89,16 @@ class Board:
                 self.__setup_values.append(data[DISTANCE_INDEX])
 
             if self.__setup and data[DISTANCE_INDEX] in self.__acceptable_range:
-                self.__direction_logic(data[TRIG_PIN_INDEX])
-                return cb(data) if cb is not None else None
+                sensor = self.__ultrasonics[data[TRIG_PIN_INDEX]]
+                now = datetime.now(pytz.utc)
+
+                if len(sensor.timestamps):
+                    if (now - sensor.timestamps[-1]) > timedelta(seconds=.5):
+                        self.__direction_logic(data[TRIG_PIN_INDEX])
+                        return cb(data) if cb is not None else None
+                else:
+                    self.__direction_logic(data[TRIG_PIN_INDEX])
+                    return cb(data) if cb is not None else None
 
         return decorated
 
@@ -198,12 +206,16 @@ class UltraSonic:
 
         # Timestamp detection with the most recent stamps being at the end of the list
         self.timestamps: List[datetime] = list()
-        board.sonar_config(self.trig, self.echo, self.cb)
+        board.sonar_config(self.trig, self.echo, self.cb, ping_interval=127)
 
     def detected(self):
-        self.timestamps.append(datetime.now(pytz.utc))
+        now = datetime.now(pytz.utc)
+        if len(self.timestamps):
+            if (now - self.timestamps[-1]) > timedelta(seconds=.5):
+                self.timestamps.append(datetime.now(pytz.utc))
+        else:
+            self.timestamps.append(datetime.now(pytz.utc))
 
         # Only keep MAX_TIMESTAMPS in scope
-        now = datetime.now(pytz.utc)
         while len(self.timestamps) > self.MAX_TIMESTAMPS or (now - self.timestamps[0]) > self.ACCEPTABLE_TIME_DELTA:
             self.timestamps.pop(0)
