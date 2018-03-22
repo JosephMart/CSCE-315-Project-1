@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import pytz as pytz
 from pymata_aio.pymata3 import PyMata3
 
+import Api
 from Constants import LOG_CONFIG, TRIG_PIN_INDEX, DISTANCE_INDEX
 
 logging.basicConfig(**LOG_CONFIG)
@@ -93,7 +94,7 @@ class Board:
                 now = datetime.now(pytz.utc)
 
                 if len(sensor.timestamps):
-                    if (now - sensor.timestamps[-1]) > timedelta(seconds=.5):
+                    if (now - sensor.timestamps[-1]) > timedelta(seconds=3):
                         self.__direction_logic(data[TRIG_PIN_INDEX])
                         return cb(data) if cb is not None else None
                 else:
@@ -124,11 +125,13 @@ class Board:
             log.debug("Someone went Right to Left")
             for _, sensor in self.__ultrasonics.items():
                 sensor.timestamps = list()
+            Api.increment(True)
 
         if check_right_to_left == times:
             log.debug("Someone went Left to Right")
             for _, sensor in self.__ultrasonics.items():
                 sensor.timestamps = list()
+            Api.increment(True)
 
     def add_ultrasonic(self, trig_pin: int, echo_pin: int, cb: Callable[[List[int]], None] = default_sonic_cb):
         """
@@ -207,15 +210,20 @@ class UltraSonic:
         # Timestamp detection with the most recent stamps being at the end of the list
         self.timestamps: List[datetime] = list()
         board.sonar_config(self.trig, self.echo, self.cb, ping_interval=127)
+        self.running = False
 
     def detected(self):
         now = datetime.now(pytz.utc)
+        if self.running:
+            return
+        self.running = True
         if len(self.timestamps):
-            if (now - self.timestamps[-1]) > timedelta(seconds=.5):
-                self.timestamps.append(datetime.now(pytz.utc))
-        else:
-            self.timestamps.append(datetime.now(pytz.utc))
+            if (now - self.timestamps[-1]) < timedelta(seconds=3):
+                return
+        self.timestamps.append(datetime.now(pytz.utc))
 
         # Only keep MAX_TIMESTAMPS in scope
         while len(self.timestamps) > self.MAX_TIMESTAMPS or (now - self.timestamps[0]) > self.ACCEPTABLE_TIME_DELTA:
-            self.timestamps.pop(0)
+            if len(self.timestamps) > 1:
+                self.timestamps.pop(0)
+        self.running = False
