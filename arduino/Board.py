@@ -44,6 +44,9 @@ class Board:
         self.__collect_values: bool = False
         self.__setup_values: List = []
 
+        self.lock = False
+        self.last_sensor_read = None
+
         log.info("Board Successfully Created")
 
     def __del__(self):
@@ -80,12 +83,16 @@ class Board:
             # If already have setup and distance is acceptable, store distances
             if self.__setup and data[DISTANCE_INDEX] in self.__acceptable_range:
                 sensor: datetime = self.__ultrasonics[data[TRIG_PIN_INDEX]]
-                now: datetime = datetime.now(pytz.utc)
+                now: datetime = datetime.now()
 
-                if sensor.timestamp is None or (now - sensor.timestamp) > timedelta(seconds=2):
-                    sensor.detected()
-                    self.__direction_logic()
-                    return cb(data) if cb is not None else None
+                if (now - sensor.timestamp) < timedelta(seconds=2):
+                    return
+
+                sensor.detected()
+                self.__direction_logic()
+                
+                self.last_sensor_read = sensor.trig
+                return cb(data) if cb is not None else None
 
         return decorated
 
@@ -102,16 +109,19 @@ class Board:
         log.debug(f'Time diff {diff}')
 
         if timedelta(seconds=-2) < diff < timedelta(seconds=2):
-            if right_sensor.timestamp > left_sensor.timestamp:
-                log.info('Person walked from left to right')
+            if diff < timedelta(seconds=0):
+                msg = 'Person walked from right to left'
+                log.info(msg)
+                print(msg)
                 if Board.POST_DATA:
                     Api.increment(True)
-            elif left_sensor.timestamp > right_sensor.timestamp:
-                log.info('Person walked from right to left')
+            elif diff > timedelta(seconds=0):
+                msg = 'Person walked from left to right'
+                log.info(msg)
+                print(msg)
                 if Board.POST_DATA:
                     Api.increment(True)
-            left_sensor.timestamp = None
-            right_sensor.timestamp = None
+            left_sensor.timestamp = right_sensor.timestamp = datetime.now()
 
     def add_ultrasonic(self, trig_pin: int, echo_pin: int, cb: Callable[[List[int]], None] = default_sonic_cb):
         """
@@ -183,15 +193,15 @@ class UltraSonic:
     ACCEPTABLE_TIME_DELTA: timedelta = timedelta(seconds=1.5)
 
     def __init__(self, board, trig: int, echo: int, cb: Callable[[List[int]], None]):
-        self.trig = trig
-        self.echo = echo
+        self.trig: int = trig
+        self.echo: int = echo
         self.cb = cb
 
         # Timestamp detection with the most recent stamps being at the end of the list
-        self.timestamp: datetime = None
-        board.sonar_config(self.trig, self.echo, self.cb)
+        self.timestamp: datetime = datetime.now()
+        board.sonar_config(self.trig, self.echo, self.cb, ping_interval=127)
 
     def detected(self):
-        now = datetime.now(pytz.utc)
+        now = datetime.now()
         self.timestamp = now
         log.debug(f'UltraSonic ({self.trig}) detected at {now}')
