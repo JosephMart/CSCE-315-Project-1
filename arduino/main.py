@@ -22,7 +22,10 @@ def main():
     board.setup_environment()
 
     # Run the program
-    board.run()
+    try:
+        board.run()
+    except (KeyboardInterrupt, SystemExit):
+        print("Ending the program")
 
 
 if __name__ == '__main__':

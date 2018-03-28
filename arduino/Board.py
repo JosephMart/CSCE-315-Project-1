@@ -1,14 +1,13 @@
 import logging
+from datetime import datetime, timedelta
 from functools import wraps
 from typing import Callable, Dict, List
-
-from datetime import datetime, timedelta
 
 import pytz as pytz
 from pymata_aio.pymata3 import PyMata3
 
 import Api
-from Constants import LOG_CONFIG, TRIG_PIN_INDEX, DISTANCE_INDEX, NUM_SENSORS
+from Constants import DISTANCE_INDEX, LOG_CONFIG, NUM_SENSORS, TRIG_PIN_INDEX, ULTRASONIC_PINS
 
 logging.basicConfig(**LOG_CONFIG)
 log = logging.getLogger(__name__)
@@ -22,6 +21,7 @@ def default_sonic_cb(data: List[int]):
 
 class Board:
     PRINT_ALL = False
+    POST_DATA = True
 
     def __init__(self):
         """
@@ -59,19 +59,6 @@ class Board:
         """
         return range(self.__min_distance, self.__max_distance)
 
-    def __aggregate_timestamps(self) -> List[List[datetime]]:
-        """
-        Aggregate the timestamps stored in the sensors
-        """
-        # Get pin numbers with the lower the pin number the farther to the left the sensor is located
-        trig_pins = list(self.__ultrasonics.keys())
-        trig_pins.sort()
-        times = list()
-
-        for tp in trig_pins:
-            times.append(self.__ultrasonics[tp].timestamps)
-        return times
-
     def __ultrasonic_decorator(self, cb: Callable[[List[int]], None]) -> Callable[[List[int]], None]:
         """
         Don't allow sonic callback if setup has occurred and distance is not within acceptable range
@@ -80,58 +67,51 @@ class Board:
         :param cb:
         :return: None
         """
-
         @wraps(cb)
         def decorated(data: List[int]) -> None:
             if self.PRINT_ALL:
                 log.info(
                     log.debug(f"Sensor Trig Pin: {data[TRIG_PIN_INDEX]: <2}\tDistance: {data[DISTANCE_INDEX]: <3} cm"))
+
+            # If in collect mode collect values
             if self.__collect_values:
                 self.__setup_values.append(data[DISTANCE_INDEX])
 
+            # If already have setup and distance is acceptable, store distances
             if self.__setup and data[DISTANCE_INDEX] in self.__acceptable_range:
-                sensor = self.__ultrasonics[data[TRIG_PIN_INDEX]]
-                now = datetime.now(pytz.utc)
+                sensor: datetime = self.__ultrasonics[data[TRIG_PIN_INDEX]]
+                now: datetime = datetime.now(pytz.utc)
 
-                if len(sensor.timestamps):
-                    if (now - sensor.timestamps[-1]) > timedelta(seconds=3):
-                        self.__direction_logic(data[TRIG_PIN_INDEX])
-                        return cb(data) if cb is not None else None
-                else:
-                    self.__direction_logic(data[TRIG_PIN_INDEX])
+                if sensor.timestamp is None or (now - sensor.timestamp) > timedelta(seconds=2):
+                    sensor.detected()
+                    self.__direction_logic()
                     return cb(data) if cb is not None else None
 
         return decorated
 
-    def __direction_logic(self, trig_pin: int):
-        # Update appropriate sensor timestamp list
-        self.__ultrasonics[trig_pin].detected()
-
+    def __direction_logic(self):
         # Determine if someone has moved to the left
-        timestamps: List[List[datetime]] = self.__aggregate_timestamps()
+        right_sensor: UltraSonic = self.__ultrasonics[min([x['trig_pin'] for x in ULTRASONIC_PINS])]
+        left_sensor: UltraSonic = self.__ultrasonics[max([x['trig_pin'] for x in ULTRASONIC_PINS])]
 
-        times = list()
-        # Determine has moved from left to right (currently ignoring two people)
-        for sensor_times in timestamps:
-            if len(sensor_times) == 0:
-                return
-            times.append(sensor_times[-1])
+        if right_sensor.timestamp is None or left_sensor.timestamp is None:
+            return
 
-        check_left_to_right = times[:]
-        check_right_to_left = times[::-1]
-        times.sort()
+        diff: timedelta = right_sensor.timestamp - left_sensor.timestamp
 
-        if check_left_to_right == times:
-            log.debug("Someone went Right to Left")
-            for _, sensor in self.__ultrasonics.items():
-                sensor.timestamps = list()
-            Api.increment(True)
+        log.debug(f'Time diff {diff}')
 
-        if check_right_to_left == times:
-            log.debug("Someone went Left to Right")
-            for _, sensor in self.__ultrasonics.items():
-                sensor.timestamps = list()
-            Api.increment(True)
+        if timedelta(seconds=-2) < diff < timedelta(seconds=2):
+            if right_sensor.timestamp > left_sensor.timestamp:
+                log.info('Person walked from left to right')
+                if Board.POST_DATA:
+                    Api.increment(True)
+            elif left_sensor.timestamp > right_sensor.timestamp:
+                log.info('Person walked from right to left')
+                if Board.POST_DATA:
+                    Api.increment(True)
+            left_sensor.timestamp = None
+            right_sensor.timestamp = None
 
     def add_ultrasonic(self, trig_pin: int, echo_pin: int, cb: Callable[[List[int]], None] = default_sonic_cb):
         """
@@ -199,7 +179,7 @@ class Board:
             self.sleep()
 
 class UltraSonic:
-    MAX_TIMESTAMPS: int = 10
+    # MAX_timestamps_FIX: int = 10
     ACCEPTABLE_TIME_DELTA: timedelta = timedelta(seconds=1.5)
 
     def __init__(self, board, trig: int, echo: int, cb: Callable[[List[int]], None]):
@@ -208,20 +188,10 @@ class UltraSonic:
         self.cb = cb
 
         # Timestamp detection with the most recent stamps being at the end of the list
-        self.timestamps: List[datetime] = list()
-        board.sonar_config(self.trig, self.echo, self.cb, ping_interval=127)
-        self.running = False
+        self.timestamp: datetime = None
+        board.sonar_config(self.trig, self.echo, self.cb)
 
     def detected(self):
         now = datetime.now(pytz.utc)
-        if self.running:
-            return
-        self.running = True
-        if len(self.timestamps):
-            if (now - self.timestamps[-1]) < timedelta(seconds=3):
-                return
-        self.timestamps.append(datetime.now(pytz.utc))
-
-        # Only keep MAX_TIMESTAMPS in scope
-        self.timestamps = [self.timestamps[-1]]
-        self.running = False
+        self.timestamp = now
+        log.debug(f'UltraSonic ({self.trig}) detected at {now}')

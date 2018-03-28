@@ -18,8 +18,6 @@ ENDPOINTS: Dict[str, str] = {
 # Lower the pin, the farther to the right the pin is
 ULTRASONIC_PINS: List[Dict[str, int]] = [
     {"trig_pin": 2, "echo_pin": 3},
-    # {"trig_pin": 4, "echo_pin": 5},
-    # {"trig_pin": 6, "echo_pin": 7},
     {"trig_pin": 8, "echo_pin": 9}
 ]
 
