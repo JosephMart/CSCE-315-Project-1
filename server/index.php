@@ -57,13 +57,14 @@
                         <tr>
                             <td>ID</td>
                             <td>Time</td>
+                            <td>Entering</td>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             # Display table data
                             while($row = $rs->fetch(PDO::FETCH_ASSOC))
-                                echo("<tr><td>".$row['id']."</td><td>".$row['time']."</td><td>\n");
+                                echo("<tr><td>".$row['id']."</td><td>".$row['time']."</td><td>".$row['entering']."</td><td>\n");
                         ?>
                     </tbody>
                 </table>

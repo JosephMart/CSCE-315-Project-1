@@ -41,11 +41,14 @@ make deploy # Deploy server code to TAMU server
 ### SQL To Create Table
 
 ```sql
-CREATE TABLE `NET_ID`.`PeopleCounts` (
-	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, 
-	`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-	PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `PeopleCounts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `entering` enum('false','true') NOT NULL DEFAULT 'true'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `PeopleCounts`
+  ADD PRIMARY KEY (`id`);
 ```
 
 ### View
@@ -53,9 +56,18 @@ Main page `web_project/p1/index.php` is a table of all data.
 
 ### Increment
 
-Increment count table by 1
+Increment count table by 1 (Entering)
 ```bash
-curl -d "secret=69" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://projects.cse.tamu.edu/NETID/p1/api/increment.php
+curl -X POST \
+  http://projects.cse.tamu.edu/NETID/p1/api/increment.php \
+  -d 'secret=69&entering=%22true%22'
+```
+
+Exeting
+```bash
+curl -X POST \
+  http://projects.cse.tamu.edu/NETID/p1/api/increment.php \
+  -d 'secret=69&entering=%22false%22'
 ```
 
 ### Reset Table
