@@ -39,7 +39,7 @@
                 $COMMON = new Common($debug);
 
                 # Select all items in PeopleCounts for display
-                $sql = "SELECT * FROM `PeopleCounts` ORDER BY `PeopleCounts`.`id` DESC";
+                $sql = "SELECT * FROM `PeopleCounts` ORDER BY `PeopleCounts`.`time` DESC";
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
                 # Count number of items in PeopleCounts
@@ -55,7 +55,6 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <td>ID</td>
                             <td>Time</td>
                             <td>Entering</td>
                         </tr>
@@ -64,7 +63,7 @@
                         <?php
                             # Display table data
                             while($row = $rs->fetch(PDO::FETCH_ASSOC))
-                                echo("<tr><td>".$row['id']."</td><td>".$row['time']."</td><td>".$row['entering']."</td><td>\n");
+                                echo("<tr><td>".$row['time']."</td><td>".$row['entering']."</td><tr>\n");
                         ?>
                     </tbody>
                 </table>
