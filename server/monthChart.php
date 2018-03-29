@@ -114,7 +114,7 @@
 
             for (var i = 0; i < db_data.length; i++) {
                 row = db_data[i];
-                graph_data.push([moment(row.date).format('MMMM  Y'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
+                graph_data.push([moment(row.date).format('MMMM Y'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
             }
 
             // Get Current range dates
