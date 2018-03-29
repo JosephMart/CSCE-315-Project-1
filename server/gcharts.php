@@ -28,36 +28,36 @@
                 title: 'Motivation and Energy Level Throughout the Day',
                 focusTarget: 'category',
                 hAxis: {
-                title: 'Time of Day',
+                title: 'Time',
                 format: 'h:mm a',
                 viewWindow: {
                     min: [7, 30, 0],
                     max: [17, 30, 0]
                 },
                 textStyle: {
-                    fontSize: 14,
-                    color: '#053061',
-                    bold: true,
+                    fontSize: 12,
+                    color: '#000',
+                    bold: false,
                     italic: false
                 },
                 titleTextStyle: {
-                    fontSize: 18,
-                    color: '#053061',
+                    fontSize: 12,
+                    color: '#00',
                     bold: true,
                     italic: false
                 }
                 },
                 vAxis: {
-                title: 'Rating (scale of 1-10)',
+                title: '# of People',
                 textStyle: {
-                    fontSize: 18,
-                    color: '#67001f',
+                    fontSize: 12,
+                    color: '#000',
                     bold: false,
                     italic: false
                 },
                 titleTextStyle: {
-                    fontSize: 18,
-                    color: '#67001f',
+                    fontSize: 14,
+                    color: '#000',
                     bold: true,
                     italic: false
                 }
