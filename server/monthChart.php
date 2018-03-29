@@ -29,15 +29,16 @@
                     ) AS going_out, 
                     CONCAT(YEAR(time),'-',MONTH(time)) AS date 
                 FROM 
-                    PeopleCounts 
-                GROUP BY date";
+                    PeopleCounts";
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $begin = $_POST['start_date'];
                 $end = $_POST['end_date'];
 
-                $sql = $sql.' '."WHERE time >= '".$begin."' AND time <= '".$end."' GROUP BY date";
+                $sql = $sql.' '."WHERE time >= '".$begin."' AND time <= '".$end."'";
             }
+
+            $sql = $sql.' GROUP BY date';
 
             $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             $result = $rs->fetchAll();
