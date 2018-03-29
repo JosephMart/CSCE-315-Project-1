@@ -168,7 +168,6 @@
                 </tbody>
             </table>
 
-
             <div id="chart_div" style="width: 800px; height: 500px;margin: auto;"></div>
             
             <form action="" method="post">
