@@ -14,6 +14,10 @@ deps:
 freeze:
 	. $(VENV_PATH)/bin/activate && $(VENV_PATH)/bin/pip freeze > arduino/requirements.txt
 
+move:
+	rm -rf ~/web_project/p1;mkdir ~/web_project/p1;
+	cp -r ~/315Project1/server/* ~/web_project/p1/
+
 clean_venv:
 	rm -rf $(VENV_PATH)
 

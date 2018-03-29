@@ -8,16 +8,10 @@ function drawMonthView() {
             title: 'Rec Center Counts',
             subtitle: start_date + ' - ' + end_date
         },
-        series: {
-            0: { axis: 'Entering' },
-            1: { axis: 'Exiting' }
-        },
-        axes: {
-            y: {
-                distance: {label: 'Number of People'}, // Left y-axis.
-                brightness: {side: 'right', label: 'Date Time'} // Right y-axis.
-            }
-        }
+          bars: 'vertical',
+          vAxis: {format: 'decimal'},
+          height: 400,
+          colors: ['#50191F', '#eed5ae']
     };
 
     function drawMaterialChart() {
