@@ -34,12 +34,10 @@
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $begin = $_POST['start_date'];
                 $end = $_POST['end_date'];
-
                 $sql = $sql.' '."WHERE time >= '".$begin."' AND time <= '".$end."'";
             }
 
             $sql = $sql.' GROUP BY date';
-
             $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             $result = $rs->fetchAll();
         ?>
