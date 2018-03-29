@@ -1,3 +1,10 @@
+<?php
+    // Simple password protection
+    if (!isset($_COOKIE['password']) || $_COOKIE['password'] !== '1234') {
+        header('Location: login.php');
+        exit;
+    }
+?>
 <!DOCTYPE HTML>
 <html>
     <head>
