@@ -123,13 +123,13 @@
             var db_data = <?php echo json_encode($result) ?>;
             var graph_data = [['Date Times', 'Entering', 'Exiting']];
             var row = {};
-            console.log(db_data);
+            
 
             for (var i = 0; i < db_data.length; i++) {
                 row = db_data[i];
                 graph_data.push([moment(row.date).format('hh:mm a'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
             }
-
+            console.log(graph_data);
             // Get Current range dates
             var start_date = graph_data[1][0];
             var end_date = graph_data[graph_data.length - 1][0];
