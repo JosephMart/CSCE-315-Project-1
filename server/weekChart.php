@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>CSCE 315 Project 1|Analysis</title>
+        <title>CSCE 315 Project 1|Week Chart</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="./main.css">
 
@@ -24,7 +24,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Table</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Charts
                         </a>
@@ -35,7 +35,7 @@
                             <a class="dropdown-item" href="todayChart.php">Today</a>
                         </div>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="analysis.php">Numerical Analysis</a>
                     </li>
                     <li class="nav-item">
@@ -45,7 +45,7 @@
             </div>
         </nav>
         <div class="container">
-            <h1>Analysis</h1>
+            <h1>Week Chart</h1>
         </div>
     </body>
 </html>

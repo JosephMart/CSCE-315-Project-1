@@ -65,10 +65,10 @@
                         <a class="nav-link" href="charts.php">Charts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Numerical Analysis</a>
+                        <a class="nav-link" href="#">Numerical Analysis</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Admin</a>
+                        <a class="nav-link" href="#">Admin</a>
                     </li>
                 </ul>
             </div>
