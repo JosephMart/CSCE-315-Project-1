@@ -32,11 +32,8 @@
                             <a class="dropdown-item" href="monthChart.php">Month</a>
                             <a class="dropdown-item" href="weekChart.php">Week</a>
                             <a class="dropdown-item" href="dayChart.php">Day</a>
-                            <a class="dropdown-item" href="todayChart.php">Today</a>
+                            <a class="dropdown-item" href="hourChart.php">Hour</a>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="analysis.php">Numerical Analysis</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admin.php">Admin</a>
