@@ -72,14 +72,14 @@ function AnalyzeQuery($subQuery)
     // Analysis queries
     $sql = <<< SQL
     SELECT 
-        SUM(going_in) as totalIn, 
-        AVG(going_in) as averageIn, 
-        MIN(going_in) as minIn, 
-        MAX(going_in) as maxIn,
-        SUM(going_out) as totalOut, 
-        AVG(going_out) as averageOut, 
-        MIN(going_out) as minOut, 
-        MAX(going_out) as maxOut
+        SUM(goingIn) as totalIn, 
+        AVG(goingIn) as averageIn, 
+        MIN(goingIn) as minIn, 
+        MAX(goingIn) as maxIn,
+        SUM(goingOut) as totalOut, 
+        AVG(goingOut) as averageOut, 
+        MIN(goingOut) as minOut, 
+        MAX(goingOut) as maxOut
     FROM ({$subQuery}) as sub;
 SQL;
     $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
@@ -99,10 +99,10 @@ function GetHourData($date)
                 COUNT(DISTINCT id) AS count, 
                 SUM(
                     CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                ) AS going_in, 
+                ) AS goingIn, 
                 SUM(
                     CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                ) AS going_out, 
+                ) AS goingOut, 
                 DATE_FORMAT(time, '%Y-%m-%d %H:00') AS date
             FROM 
                 PeopleCounts 
@@ -137,12 +137,12 @@ SQL;
             CASE WHEN entering = 'true'
                 THEN 1
             ELSE 0 END
-        )                  AS going_in,
+        )                  AS goingIn,
         SUM(
             CASE WHEN entering = 'false'
                 THEN 1
             ELSE 0 END
-        )                  AS going_out,
+        )                  AS goingOut,
         DATE_FORMAT(time, '%Y-%m-%d') AS date
     FROM `PeopleCounts`
     {$whereStatement}
@@ -176,12 +176,12 @@ SQL;
             CASE WHEN entering = 'true'
                 THEN 1
             ELSE 0 END
-        )                  AS going_in,
+        )                  AS goingIn,
         SUM(
             CASE WHEN entering = 'false'
                 THEN 1
             ELSE 0 END
-        )                  AS going_out,
+        )                  AS goingOut,
         DATE_FORMAT(time, '%Y-%U') AS date
     FROM `PeopleCounts`
     {$whereStatement}
@@ -215,12 +215,12 @@ SQL;
             CASE WHEN entering = 'true'
                 THEN 1
             ELSE 0 END
-        )                  AS going_in,
+        )                  AS goingIn,
         SUM(
             CASE WHEN entering = 'false'
                 THEN 1
             ELSE 0 END
-        )                  AS going_out,
+        )                  AS goingOut,
         DATE_FORMAT(time, '%Y-%m') AS date
     FROM `PeopleCounts`
     {$whereStatement}

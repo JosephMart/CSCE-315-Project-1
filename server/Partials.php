@@ -50,7 +50,7 @@ function HtmlHeader($pageName)
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
 
         <!-- Project JS -->
-        <script type="text/javascript" src="./js/charts.js"></script>
+        <script type="text/javascript" src="./js/Main.js"></script>
 HTML;
 }
 

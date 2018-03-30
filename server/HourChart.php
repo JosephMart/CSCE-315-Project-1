@@ -49,24 +49,11 @@ list($result, $resultCounts) = GetHourData($selectedDate);
 
         <script type="text/javascript">
             // DB data to JS
-            var db_data = <?php echo json_encode($result) ?>;
-            var resultCounts = <?php echo json_encode($resultCounts) ?>;
-            var graph_data = [['Date Times', 'Entering', 'Exiting']];
-            var row = {};
-            
+            var dbData = <?php echo json_encode($result) ?>;
 
-            for (var i = 0; i < db_data.length; i++) {
-                row = db_data[i];
-                graph_data.push([moment(row.date).format('hh:mm a'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
-            }
-            console.log(resultCounts);
-            // Get Current range dates
-            var start_date = graph_data[1][0];
-            var end_date = graph_data[graph_data.length - 1][0];
-
-            // Google Charts setup
-            google.charts.load('current', {'packages':['corechart', 'bar']});
-            google.charts.setOnLoadCallback(drawMonthView);
+            LoadGraph(dbData, function(date) {
+                return moment(date).format('hh:mm a');
+            });
         </script>
     </body>
 </html>
