@@ -53,12 +53,20 @@
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
                 # Count number of items in PeopleCounts
-                $countSql = 'SELECT COUNT(*) from `PeopleCounts`';
+                $countSql = "SELECT
+                    SUM(
+                        CASE WHEN entering = 'true' THEN 1 ELSE 0 END
+                    ) AS entering,
+                    SUM(
+                        CASE WHEN entering = 'false' THEN 1 ELSE 0 END
+                    ) AS leaving
+                    FROM `PeopleCounts`";
                 $countRs = $COMMON->executeQuery($countSql, $_SERVER["SCRIPT_NAME"]);
-                $count = $countRs->fetchColumn();
+                $count = $countRs->fetchAll()[0];
             ?>
             <h1>People Counts</h1>
-            <?php echo('<p>Number of People: ' . $count . '</p>') ?>
+            <?php echo('<p>Number of Entering: ' . $count['entering'] . '</p>') ?>
+            <?php echo('<p>Number of Leaving: ' . $count['leaving'] . '</p>') ?>
             <p id="counts" class="font-italic font-weight-light" style="font-size:10px;"></p>
             
             <div class="table-responsive">
