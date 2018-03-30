@@ -16,6 +16,33 @@ $debug = false;
 $COMMON = new Common($debug);
 
 //-------------------------------------------------------
+// Name: Increment
+// PreCondition: entering is either 'true' or 'false' or
+//  empty
+// PostCondition: Increment someone entering or leaving
+//---------------------------------------------------------
+function Increment($entering)
+{
+    global $COMMON;
+
+    $sql = <<< SQL
+    INSERT INTO `PeopleCounts` (`id`, `time`, `entering`) VALUES (NULL, CURRENT_TIMESTAMP, '{$entering}')
+SQL;
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+}
+
+function ResetDb() {
+    // Delete users
+    $sql = "DELETE FROM `PeopleCounts`";
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+
+    // Reset AutoIncrement
+    $alter = 'ALTER TABLE `PeopleCounts` AUTO_INCREMENT = 1';
+    $rs = $COMMON->executeQuery($alter, $_SERVER["SCRIPT_NAME"]);
+}
+
+
+//-------------------------------------------------------
 // Name: GetAllCounts
 // PostCondition: Return count number of items array with
 //   array having keys `entering` and `leaving

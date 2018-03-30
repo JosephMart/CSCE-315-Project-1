@@ -10,34 +10,25 @@
 ***********************************************/
 
 include('Partials.php');
+include('Actions.php');
 
 // Simple password protection
 if (!isset($_COOKIE['password']) || $_COOKIE['password'] !== '1234') {
     header('Location: Login.php');
     exit;
 }
-include('./CommonMethods.php');
-$COMMON = new Common($debug);
 
 if (isset($_POST["enter"])) {
-    $sql = "INSERT INTO `PeopleCounts` (`id`, `time`, `entering`) VALUES (NULL, CURRENT_TIMESTAMP, 'true')";
-    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    Increment('true');
 }
 
 if (isset($_POST["exit"])) {
-    $sql = "INSERT INTO `PeopleCounts` (`id`, `time`, `entering`) VALUES (NULL, CURRENT_TIMESTAMP, 'false')";
-    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    Increment('false');
 }
 
 if (isset($_POST["reset"])) {
     echo 'delete';
-    // Delete users
-    // $sql = "DELETE FROM `PeopleCounts`";
-    // $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
-
-    // // Reset AutoIncrement
-    // $alter = 'ALTER TABLE `PeopleCounts` AUTO_INCREMENT = 1';
-    // $rs = $COMMON->executeQuery($alter, $_SERVER["SCRIPT_NAME"]);
+    // ResetDb();
 }
 ?>
 <!DOCTYPE HTML>
