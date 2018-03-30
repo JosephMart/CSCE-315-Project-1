@@ -113,6 +113,30 @@ HTML;
 // Name: AnalysisTable
 // PostCondition: Prints template table for analysis
 //---------------------------------------------------------
+function StandardChartForm() {
+    print <<< HTML
+        <form action="" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-3"></div>
+                <div class="form-group col-md-3">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" placeholder="" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="endDate">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" placeholder="" required>
+                </div>
+                <div class="form-group col-md-3"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+HTML;
+}
+
+//-------------------------------------------------------
+// Name: AnalysisTable
+// PostCondition: Prints template table for analysis
+//---------------------------------------------------------
 function AnalysisTable($counts) {
     print <<< HTML
         <h3>Entering</h3>

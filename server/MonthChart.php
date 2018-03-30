@@ -34,22 +34,8 @@ list($result, $resultCounts) = GetMonthData($begin, $end);
             <?php AnalysisTable($resultCounts); ?>
 
             <div id="chart_div" style="width: 800px; height: 500px;margin: auto;"></div>
-            
-            <form action="" method="post">
-                <div class="form-row">
-                    <div class="form-group col-md-3"></div>
-                    <div class="form-group col-md-3">
-                        <label for="startDate">Start Date</label>
-                        <input type="date" class="form-control" id="startDate" name="startDate" placeholder="" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="endDate">End Date</label>
-                        <input type="date" class="form-control" id="endDate" name="endDate" placeholder="" required>
-                    </div>
-                    <div class="form-group col-md-3"></div>
-                </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+
+            <?php StandardChartForm(); ?>
         </div>
 
         <script type="text/javascript">
