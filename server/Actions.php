@@ -59,4 +59,72 @@ SQL;
     return $rs->fetchAll()[0];
 }
 
+//-------------------------------------------------------
+// Name: GetHourData
+// PostCondition: Return data and analysis on an hour basis
+//---------------------------------------------------------
+function GetHourData($date)
+{
+    global $COMMON;
+
+    $sql = <<< SQL
+            SELECT 
+                COUNT(DISTINCT id) AS count, 
+                SUM(
+                    CASE WHEN entering = 'true' THEN 1 ELSE 0 END
+                ) AS going_in, 
+                SUM(
+                    CASE WHEN entering = 'false' THEN 1 ELSE 0 END
+                ) AS going_out, 
+                DATE_FORMAT(time, '%Y-%m-%d %H:00') AS date
+            FROM 
+                PeopleCounts 
+            WHERE DATE(time) = {$date}
+            GROUP BY 
+                date
+SQL;
+
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    return array($rs->fetchAll(), AnalyzeQuery($sql));
+}
+
+//-------------------------------------------------------
+// Name: GetWeekData
+// PostCondition: Return data and analysis on a week basis
+//---------------------------------------------------------
+function GetWeekData($start, $end)
+{
+    global $COMMON;
+    $whereStatement = '';
+
+    if(isset($start) && isset($end)) {
+        $whereStatement = <<< SQL
+            WHERE time >= '{$start}' AND time <= '{$end}'
+SQL;
+    }
+
+    $sql = <<< SQL
+        SELECT
+        COUNT(DISTINCT id) AS count,
+        SUM(
+            CASE WHEN entering = 'true'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_in,
+        SUM(
+            CASE WHEN entering = 'false'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_out,
+        DATE_FORMAT(time, '%Y-%U') AS date
+    FROM `PeopleCounts`
+    {$whereStatement}
+    GROUP BY date
+    ORDER BY date ASC
+SQL;
+
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    return array($rs->fetchAll(), AnalyzeQuery($sql));
+}
+
 ?>

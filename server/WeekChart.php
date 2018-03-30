@@ -19,37 +19,12 @@ include_once('./CommonMethods.php');
     <head>
         <?php HtmlHeader('Week Chart') ?>
         <?php
-            // Execute Query
-            $COMMON = new Common(false);
-
-            $sql = "SELECT 
-                COUNT(DISTINCT id) AS count, 
-                SUM(
-                    CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                ) AS going_in, 
-                SUM(
-                    CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                ) AS going_out, 
-                CONCAT(
-                    YEAR(time), 
-                    '-',
-                    WEEK(time)
-                ) AS date
-            FROM 
-                PeopleCounts";
-
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $begin = $_POST['start_date'];
                 $end = $_POST['end_date'];
-
-                $sql = $sql." WHERE time >= '".$begin."' AND time <= '".$end."'";
             }
-            $sql = $sql." GROUP BY date";
 
-            $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
-            $result = $rs->fetchAll();
-
-            $resultCounts = AnalyzeQuery($sql);
+            list($result, $resultCounts) = GetWeekData($begin, $end);
         ?>
     </head>
     <body>

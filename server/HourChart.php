@@ -12,7 +12,6 @@
 
 include('Partials.php');
 include('Actions.php');
-include_once('./CommonMethods.php');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -20,62 +19,12 @@ include_once('./CommonMethods.php');
         <?php HtmlHeader('Today Chart') ?>
 
         <?php
-            $COMMON = new Common(false);
-
-            $sql = "SELECT 
-                COUNT(DISTINCT id) AS count, 
-                SUM(
-                    CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                ) AS going_in, 
-                SUM(
-                    CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                ) AS going_out, 
-                CONCAT(
-                    YEAR(time), 
-                    '-', 
-                    MONTH(time), 
-                    '-', 
-                    DAY(time), 
-                    ' ', 
-                    HOUR(time),
-                    ':00'
-                ) AS date 
-            FROM 
-                PeopleCounts 
-            WHERE DATE(time) = CURRENT_DATE()
-            GROUP BY 
-                date";
-
+            // Get Data
+            $selectedDate = 'CURRENT_DATE()';
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $selected_date = $_POST['selected_date'];
-
-                $sql = "SELECT 
-                    COUNT(DISTINCT id) AS count, 
-                    SUM(
-                        CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                    ) AS going_in,
-                    SUM(
-                        CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                    ) AS going_out,
-                    CONCAT(
-                        YEAR(time), 
-                        '-', 
-                        MONTH(time), 
-                        '-', 
-                        DAY(time), 
-                        ' ', 
-                        HOUR(time),
-                        ':00'
-                    ) AS date 
-                FROM 
-                    PeopleCounts 
-                WHERE DATE(time) = '".$selected_date."' GROUP BY  date";
+                $selectedDate = "'".$_POST['selectedDate']."'";
             }
-
-            $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
-            $result = $rs->fetchAll();
-
-            $resultCounts = AnalyzeQuery($sql);
+            list($result, $resultCounts) = GetHourData($selectedDate);
         ?>
     </head>
     <body>
@@ -91,8 +40,8 @@ include_once('./CommonMethods.php');
                 <div class="form-row">
                     <div class="form-group col-md-4"></div>
                     <div class="form-group col-md-4">
-                        <label for="selected_date">Date</label>
-                        <input type="date" class="form-control" id="selected_date" name="selected_date" placeholder="" required>
+                        <label for="selectedDate">Date</label>
+                        <input type="date" class="form-control" id="selectedDate" name="selectedDate" placeholder="" required>
                     </div>
                     <div class="form-group col-md-4"></div>
                 </div>
