@@ -10,7 +10,7 @@
 ***********************************************/
 
 # Setup the logger
-include('../logger.php');
+include('../Logger.php');
 $logger = new Logger();
 
 # Return forbidden error code (403) if not a DELETE request

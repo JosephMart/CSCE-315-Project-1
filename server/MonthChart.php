@@ -1,10 +1,10 @@
 <?php
 /*****************************************
-** File:    WeekChart.php
+** File:    MonthChart.php
 ** Project: CSCE 315 Project 1
 ** Date:    03/30/2018
 **
-**   This file display a graph and data on an week
+**   This file display a graph and data on an month
 ** increment
 **
 **
@@ -15,36 +15,31 @@ include('Partials.php');
 <!DOCTYPE HTML>
 <html>
     <head>
-        <?php HtmlHeader('Week Chart') ?>
+        <?php HtmlHeader('Month Chart') ?>
         <?php
             // Execute Query
             include('./CommonMethods.php');
             $COMMON = new Common(false);
 
             $sql = "SELECT 
-                COUNT(DISTINCT id) AS count, 
-                SUM(
-                    CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                ) AS going_in, 
-                SUM(
-                    CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                ) AS going_out, 
-                CONCAT(
-                    YEAR(time), 
-                    '-',
-                    WEEK(time)
-                ) AS date
-            FROM 
-                PeopleCounts";
+                    COUNT(DISTINCT id) AS count, 
+                    SUM(
+                        CASE WHEN entering = 'true' THEN 1 ELSE 0 END
+                    ) AS going_in, 
+                    SUM(
+                        CASE WHEN entering = 'false' THEN 1 ELSE 0 END
+                    ) AS going_out, 
+                    CONCAT(YEAR(time),'-',MONTH(time)) AS date 
+                FROM 
+                    PeopleCounts";
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $begin = $_POST['start_date'];
                 $end = $_POST['end_date'];
-
-                $sql = $sql." WHERE time >= '".$begin."' AND time <= '".$end."'";
+                $sql = $sql.' '."WHERE time >= '".$begin."' AND time <= '".$end."'";
             }
-            $sql = $sql." GROUP BY date";
 
+            $sql = $sql.' GROUP BY date';
             $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             $result = $rs->fetchAll();
 
@@ -79,20 +74,20 @@ include('Partials.php');
                             Charts
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="monthChart.php">Month</a>
-                            <a class="dropdown-item" href="weekChart.php">Week</a>
-                            <a class="dropdown-item" href="dayChart.php">Day</a>
-                            <a class="dropdown-item" href="hourChart.php">Hour</a>
+                            <a class="dropdown-item" href="MonthChart.php">Month</a>
+                            <a class="dropdown-item" href="WeekChart.php">Week</a>
+                            <a class="dropdown-item" href="DayChart.php">Day</a>
+                            <a class="dropdown-item" href="HourChart.php">Hour</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Admin</a>
+                        <a class="nav-link" href="Admin.php">Admin</a>
                     </li>
                 </ul>
             </div>
         </nav>
         <div class="container">
-            <h1>Week Chart</h1>
+            <h1>Month Chart</h1>
 
             <h3>Entering</h3>
 
@@ -168,18 +163,10 @@ include('Partials.php');
             var db_data = <?php echo json_encode($result) ?>;
             var graph_data = [['Date Times', 'Entering', 'Exiting']];
             var row = {};
-            var year = 0;
-            var week = 0;
-            var d = [];
-            console.log(db_data);
 
             for (var i = 0; i < db_data.length; i++) {
                 row = db_data[i];
-                d = row.date.split('-');
-                year = parseInt(d[0], 10);
-                week = parseInt(d[1], 10);
-
-                graph_data.push([moment().day("Sunday").year(year).week(week).format('MM/DD/Y'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
+                graph_data.push([moment(row.date).format('MMMM Y'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
             }
 
             // Get Current range dates

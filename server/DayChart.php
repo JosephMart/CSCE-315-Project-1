@@ -1,10 +1,10 @@
 <?php
 /*****************************************
-** File:    HourChart.php
+** File:    DayChart.php
 ** Project: CSCE 315 Project 1
 ** Date:    03/30/2018
 **
-**   This file display a graph and data on an hourly
+**   This file display a graph and data on an day
 ** increment
 **
 **
@@ -15,7 +15,7 @@ include('Partials.php');
 <!DOCTYPE HTML>
 <html>
     <head>
-        <?php HtmlHeader('Today Chart') ?>
+        <?php HtmlHeader('Day Chart') ?>
 
         <?php
             // Execute Query
@@ -23,54 +23,24 @@ include('Partials.php');
             $COMMON = new Common(false);
 
             $sql = "SELECT 
-                COUNT(DISTINCT id) AS count, 
-                SUM(
-                    CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                ) AS going_in, 
-                SUM(
-                    CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                ) AS going_out, 
-                CONCAT(
-                    YEAR(time), 
-                    '-', 
-                    MONTH(time), 
-                    '-', 
-                    DAY(time), 
-                    ' ', 
-                    HOUR(time),
-                    ':00'
-                ) AS date 
-            FROM 
-                PeopleCounts 
-            WHERE DATE(time) = CURRENT_DATE()
-            GROUP BY 
-                date";
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $selected_date = $_POST['selected_date'];
-
-                $sql = "SELECT 
                     COUNT(DISTINCT id) AS count, 
                     SUM(
                         CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                    ) AS going_in,
+                    ) AS going_in, 
                     SUM(
                         CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                    ) AS going_out,
-                    CONCAT(
-                        YEAR(time), 
-                        '-', 
-                        MONTH(time), 
-                        '-', 
-                        DAY(time), 
-                        ' ', 
-                        HOUR(time),
-                        ':00'
-                    ) AS date 
+                    ) AS going_out, 
+                    CONCAT(YEAR(time),'-',MONTH(time),'-',DAY(time)) AS date 
                 FROM 
-                    PeopleCounts 
-                WHERE DATE(time) = '".$selected_date."' GROUP BY  date";
+                    PeopleCounts";
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $begin = $_POST['start_date'];
+                $end = $_POST['end_date'];
+                $sql = $sql." WHERE time >= '".$begin."' AND time <= '".$end."'";
             }
+
+            $sql = $sql." GROUP BY date";
 
             $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             $result = $rs->fetchAll();
@@ -106,21 +76,21 @@ include('Partials.php');
                             Charts
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="monthChart.php">Month</a>
-                            <a class="dropdown-item" href="weekChart.php">Week</a>
-                            <a class="dropdown-item" href="dayChart.php">Day</a>
-                            <a class="dropdown-item" href="hourChart.php">Hour</a>
+                            <a class="dropdown-item" href="MonthChart.php">Month</a>
+                            <a class="dropdown-item" href="WeekChart.php">Week</a>
+                            <a class="dropdown-item" href="DayChart.php">Day</a>
+                            <a class="dropdown-item" href="HourChart.php">Hour</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Admin</a>
+                        <a class="nav-link" href="Admin.php">Admin</a>
                     </li>
                 </ul>
             </div>
         </nav>
         <div class="container">
-            <h1>Today Chart</h1>
-            
+            <h1>Day Chart</h1>
+
             <h3>Entering</h3>
 
             <table class="table">
@@ -175,12 +145,16 @@ include('Partials.php');
             
             <form action="" method="post">
                 <div class="form-row">
-                    <div class="form-group col-md-4"></div>
-                    <div class="form-group col-md-4">
-                        <label for="selected_date">Date</label>
-                        <input type="date" class="form-control" id="selected_date" name="selected_date" placeholder="" required>
+                    <div class="form-group col-md-3"></div>
+                    <div class="form-group col-md-3">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" placeholder="" required>
                     </div>
-                    <div class="form-group col-md-4"></div>
+                    <div class="form-group col-md-3">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" placeholder="" required>
+                    </div>
+                    <div class="form-group col-md-3"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
@@ -189,16 +163,14 @@ include('Partials.php');
         <script type="text/javascript">
             // DB data to JS
             var db_data = <?php echo json_encode($result) ?>;
-            var resultCounts = <?php echo json_encode($resultCounts) ?>;
             var graph_data = [['Date Times', 'Entering', 'Exiting']];
             var row = {};
-            
 
             for (var i = 0; i < db_data.length; i++) {
                 row = db_data[i];
-                graph_data.push([moment(row.date).format('hh:mm a'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
+                graph_data.push([moment(row.date).format('MM/DD/Y'), parseInt(row.going_in, 10), parseInt(row.going_out, 10)]);
             }
-            console.log(resultCounts);
+
             // Get Current range dates
             var start_date = graph_data[1][0];
             var end_date = graph_data[graph_data.length - 1][0];

@@ -33,14 +33,14 @@ include('Partials.php');
                             Charts
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="monthChart.php">Month</a>
-                            <a class="dropdown-item" href="weekChart.php">Week</a>
-                            <a class="dropdown-item" href="dayChart.php">Day</a>
-                            <a class="dropdown-item" href="hourChart.php">Hour</a>
+                            <a class="dropdown-item" href="MonthChart.php">Month</a>
+                            <a class="dropdown-item" href="WeekChart.php">Week</a>
+                            <a class="dropdown-item" href="DayChart.php">Day</a>
+                            <a class="dropdown-item" href="HourChart.php">Hour</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Admin</a>
+                        <a class="nav-link" href="Admin.php">Admin</a>
                     </li>
                 </ul>
             </div>

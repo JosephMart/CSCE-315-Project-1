@@ -15,7 +15,7 @@ include('Partials.php');
 
 if (isset($_POST['password']) && $_POST['password'] == '1234') {
     setcookie("password", '1234', strtotime('+30 days'));
-    header('Location: admin.php');
+    header('Location: Admin.php');
     exit;
 }
 ?>

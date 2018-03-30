@@ -9,8 +9,8 @@ SERVER_API: str = 'http://projects.cse.tamu.edu/josephmart/p1/api'
 
 # Endpoints on server
 ENDPOINTS: Dict[str, str] = {
-    'INCREMENT': '/increment.php',
-    'RESET': '/reset.php'
+    'INCREMENT': '/Increment.php',
+    'RESET': '/Reset.php'
 }
 
 # From standing behind the sensors Index 0 represents the farthest to the left sensor

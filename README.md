@@ -10,7 +10,7 @@ with `# USER SPECIFIC DATA`.
 	* $dbname
 	* $user
 	* $pass
-* `logger.php`
+* `Logger.php`
 	* $logDirectory (may need to chmod 777 this file once it is created the frist time)
 * `Constants.py`
 	* SERVER_API
@@ -71,14 +71,14 @@ Main page `web_project/p1/index.php` is a table of all data.
 Increment count table by 1 (Entering)
 ```bash
 curl -X POST \
-  http://projects.cse.tamu.edu/NETID/p1/api/increment.php \
+  http://projects.cse.tamu.edu/NETID/p1/api/Increment.php \
   -d 'secret=69&entering=%22true%22'
 ```
 
 Exeting
 ```bash
 curl -X POST \
-  http://projects.cse.tamu.edu/NETID/p1/api/increment.php \
+  http://projects.cse.tamu.edu/NETID/p1/api/Increment.php \
   -d 'secret=69&entering=%22false%22'
 ```
 
@@ -87,5 +87,5 @@ curl -X POST \
 This will clear all data in table and set increment back to 1.
 
 ```bash
-curl -X DELETE http://projects.cse.tamu.edu/NETID/p1/api/reset.php
+curl -X DELETE http://projects.cse.tamu.edu/NETID/p1/api/Reset.php
 ```

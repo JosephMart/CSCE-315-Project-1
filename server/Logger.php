@@ -1,6 +1,6 @@
 <?php
 /*****************************************
-** File:    logger.php
+** File:    Logger.php
 ** Project: CSCE 315 Project 1, Spring 2018
 **
 ** This file contains the main logger functionality.
