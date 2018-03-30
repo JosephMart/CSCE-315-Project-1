@@ -110,8 +110,8 @@ HTML;
 }
 
 //-------------------------------------------------------
-// Name: AnalysisTable
-// PostCondition: Prints template table for analysis
+// Name: StandardChartForm
+// PostCondition: Prints standard chart form to control dates
 //---------------------------------------------------------
 function StandardChartForm() {
     print <<< HTML
