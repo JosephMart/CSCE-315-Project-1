@@ -108,4 +108,62 @@ function HtmlNavbar($activePage)
     </nav>
 HTML;
 }
+
+//-------------------------------------------------------
+// Name: AnalysisTable
+// PostCondition: Prints template table for analysis
+//---------------------------------------------------------
+function AnalysisTable($counts) {
+    print <<< HTML
+        <h3>Entering</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mean</th>
+                    <th>Median</th>
+                    <th>Mode</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$counts["averageIn"]}</td>
+                    <td>-1</td>
+                    <td>-1</td>
+                    <td>{$counts["maxIn"]}</td>
+                    <td>{$counts["minIn"]}</td>
+                    <td>{$counts["totalIn"]}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Leaving</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mean</th>
+                    <th>Median</th>
+                    <th>Mode</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$counts["averageOut"]}</td>
+                    <td>-1</td>
+                    <td>-1</td>
+                    <td>{$counts["maxOut"]}</td>
+                    <td>{$counts["minOut"]}</td>
+                    <td>{$counts["totalOut"]}</td>
+                </tr>
+            </tbody>
+        </table>
+HTML;
+}
 ?>

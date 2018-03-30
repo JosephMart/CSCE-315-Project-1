@@ -11,6 +11,8 @@
 ***********************************************/
 
 include('Partials.php');
+include('Actions.php');
+include_once('./CommonMethods.php');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -18,8 +20,6 @@ include('Partials.php');
         <?php HtmlHeader('Today Chart') ?>
 
         <?php
-            // Execute Query
-            include('./CommonMethods.php');
             $COMMON = new Common(false);
 
             $sql = "SELECT 
@@ -75,19 +75,7 @@ include('Partials.php');
             $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
             $result = $rs->fetchAll();
 
-            // Analysis queries
-            $countSql = "SELECT 
-                SUM(going_in) as totalIn, 
-                AVG(going_in) as averageIn, 
-                MIN(going_in) as minIn, 
-                MAX(going_in) as maxIn,
-                SUM(going_out) as totalOut, 
-                AVG(going_out) as averageOut, 
-                MIN(going_out) as minOut, 
-                MAX(going_out) as maxOut
-            FROM (".$sql.") as sub_q";
-            $rs = $COMMON->executeQuery($countSql, $_SERVER["SCRIPT_NAME"]);
-            $resultCounts = $rs->fetchAll()[0];
+            $resultCounts = AnalyzeQuery($sql);
         ?>
     </head>
     <body>
@@ -95,55 +83,7 @@ include('Partials.php');
         <div class="container">
             <h1>Today Chart</h1>
             
-            <h3>Entering</h3>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mean</th>
-                        <th>Median</th>
-                        <th>Mode</th>
-                        <th>Max</th>
-                        <th>Min</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><?php echo $resultCounts["averageIn"] ?></td>
-                        <td>-1</td>
-                        <td>-1</td>
-                        <td><?php echo $resultCounts["maxIn"] ?></td>
-                        <td><?php echo $resultCounts["minIn"] ?></td>
-                        <td><?php echo $resultCounts["totalIn"] ?></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Leaving</h3>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mean</th>
-                        <th>Median</th>
-                        <th>Mode</th>
-                        <th>Max</th>
-                        <th>Min</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><?php echo $resultCounts["averageOut"] ?></td>
-                        <td>-1</td>
-                        <td>-1</td>
-                        <td><?php echo $resultCounts["maxOut"] ?></td>
-                        <td><?php echo $resultCounts["minOut"] ?></td>
-                        <td><?php echo $resultCounts["totalOut"] ?></td>
-                    </tr>
-                </tbody>
-            </table>
+            <?php AnalysisTable($resultCounts); ?>
 
             <div id="chart_div" style="width: 800px; height: 500px;margin: auto;"></div>
             
