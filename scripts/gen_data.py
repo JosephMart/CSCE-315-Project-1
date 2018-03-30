@@ -11,11 +11,11 @@ def make_row(d: datetime, entering: str):
 
 def main():
     now = datetime.now()
-    current_date_index = now - timedelta(days=30*5)
+    current_date_index = now - timedelta(days=30*12)
     rows = []
 
     while now > current_date_index:
-        entered = exited = randint(20, 30)
+        entered = exited = randint(50, 100)
 
         for _ in range(entered):
             hour = randint(8, 20)

@@ -49,7 +49,7 @@
                 $COMMON = new Common($debug);
 
                 # Select all items in PeopleCounts for display
-                $sql = "SELECT * FROM `PeopleCounts` ORDER BY `PeopleCounts`.`time` DESC";
+                $sql = "SELECT * FROM `PeopleCounts` ORDER BY `PeopleCounts`.`time` DESC LIMIT 100";
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
 
                 # Count number of items in PeopleCounts
