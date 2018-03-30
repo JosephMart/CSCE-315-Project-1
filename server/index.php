@@ -11,6 +11,7 @@
 ***********************************************/
 
 include('Partials.php');
+include('Actions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,24 +24,13 @@ include('Partials.php');
             <?php
                 # Setup CommonMethods for query execution
                 $debug = false;
-                include('CommonMethods.php');
+                include_once('CommonMethods.php');
                 $COMMON = new Common($debug);
 
                 # Select all items in PeopleCounts for display
                 $sql = "SELECT * FROM `PeopleCounts` ORDER BY `PeopleCounts`.`time` DESC LIMIT 100";
                 $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
-
-                # Count number of items in PeopleCounts
-                $countSql = "SELECT
-                    SUM(
-                        CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                    ) AS entering,
-                    SUM(
-                        CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                    ) AS leaving
-                    FROM `PeopleCounts`";
-                $countRs = $COMMON->executeQuery($countSql, $_SERVER["SCRIPT_NAME"]);
-                $count = $countRs->fetchAll()[0];
+                $count = GetAllCounts();
             ?>
             <h1>People Counts</h1>
             <?php echo('<p>Number of Entering: ' . $count['entering'] . '</p>') ?>

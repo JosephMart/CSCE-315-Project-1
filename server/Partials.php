@@ -17,8 +17,8 @@
 // PostCondition: Prints template for linking JS, CSS, and
 //                meta data about a general page
 //---------------------------------------------------------
-function HtmlHeader($pageName) {
-
+function HtmlHeader($pageName)
+{
     // Dynamical set page title
     $pageTitle = 'CSCE 315 Project 1';
     if (!is_null($pageName)) {
@@ -58,12 +58,13 @@ HTML;
 // Name: HtmlNavbar
 // PostCondition: Prints template for site navbar
 //---------------------------------------------------------
-function HtmlNavbar($activePage) {
-
+function HtmlNavbar($activePage)
+{
     $tableActive = '';
     $chartsActive = '';
     $adminActive = '';
 
+    // Determine which page should have the active CSS given the param
     switch ($activePage) {
         case 'table':
             $tableActive = 'active';

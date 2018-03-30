@@ -1,4 +1,5 @@
 <?php
+include_once('./Logger.php');
 
 class Common
 {
@@ -15,7 +16,6 @@ class Common
     function Common($debug)
     {
         $this->debug = $debug;
-        include('./Logger.php');
         $this->logger=new Logger();
         $rs = $this->connect($this->user); // db name really here
         return $rs;
