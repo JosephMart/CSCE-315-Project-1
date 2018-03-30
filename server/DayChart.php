@@ -13,12 +13,8 @@
 include('Partials.php');
 include('Actions.php');
 
-// Get Data
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $begin = $_POST['startDate'];
-    $end = $_POST['endDate'];
-}
-list($result, $resultCounts) = GetDayData($begin, $end);
+extract($_POST);
+list($result, $resultCounts) = GetDayData($startDate, $endDate);
 ?>
 <!DOCTYPE HTML>
 <html>

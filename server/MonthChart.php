@@ -14,12 +14,8 @@ include('Partials.php');
 include('Actions.php');
 
 // Get Data
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $begin = $_POST['startDate'];
-    $end = $_POST['endDate'];
-}
-list($result, $resultCounts) = GetMonthData($begin, $end);
-
+extract($_POST);
+list($result, $resultCounts) = GetMonthData($startDate, $endDate);
 ?>
 <!DOCTYPE HTML>
 <html>

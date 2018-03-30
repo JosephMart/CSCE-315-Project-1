@@ -14,12 +14,8 @@ include('Partials.php');
 include('Actions.php');
 
 // Get data
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $begin = $_POST['startDate'];
-    $end = $_POST['endDate'];
-}
-
-list($result, $resultCounts) = GetWeekData($begin, $end);
+extract($_POST);
+list($result, $resultCounts) = GetWeekData($startDate, $endDate);
 ?>
 <!DOCTYPE HTML>
 <html>
