@@ -12,20 +12,18 @@
 
 include('Partials.php');
 include('Actions.php');
+
+// Get Data
+$selectedDate = 'CURRENT_DATE()';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $selectedDate = "'".$_POST['selectedDate']."'";
+}
+list($result, $resultCounts) = GetHourData($selectedDate);
 ?>
 <!DOCTYPE HTML>
 <html>
     <head>
         <?php HtmlHeader('Today Chart') ?>
-
-        <?php
-            // Get Data
-            $selectedDate = 'CURRENT_DATE()';
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $selectedDate = "'".$_POST['selectedDate']."'";
-            }
-            list($result, $resultCounts) = GetHourData($selectedDate);
-        ?>
     </head>
     <body>
         <?php HtmlNavbar('charts'); ?>

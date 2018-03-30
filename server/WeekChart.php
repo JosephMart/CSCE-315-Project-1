@@ -12,20 +12,19 @@
 
 include('Partials.php');
 include('Actions.php');
-include_once('./CommonMethods.php');
+
+// Get data
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $begin = $_POST['start_date'];
+    $end = $_POST['end_date'];
+}
+
+list($result, $resultCounts) = GetWeekData($begin, $end);
 ?>
 <!DOCTYPE HTML>
 <html>
     <head>
         <?php HtmlHeader('Week Chart') ?>
-        <?php
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $begin = $_POST['start_date'];
-                $end = $_POST['end_date'];
-            }
-
-            list($result, $resultCounts) = GetWeekData($begin, $end);
-        ?>
     </head>
     <body>
         <?php HtmlNavbar('charts'); ?>

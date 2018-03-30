@@ -12,41 +12,18 @@
 
 include('Partials.php');
 include('Actions.php');
-include_once('./CommonMethods.php');
+
+// Get Data
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $begin = $_POST['start_date'];
+    $end = $_POST['end_date'];
+}
+list($result, $resultCounts) = GetDayData($begin, $end);
 ?>
 <!DOCTYPE HTML>
 <html>
     <head>
         <?php HtmlHeader('Day Chart') ?>
-
-        <?php
-            $COMMON = new Common(false);
-
-            $sql = "SELECT 
-                    COUNT(DISTINCT id) AS count, 
-                    SUM(
-                        CASE WHEN entering = 'true' THEN 1 ELSE 0 END
-                    ) AS going_in, 
-                    SUM(
-                        CASE WHEN entering = 'false' THEN 1 ELSE 0 END
-                    ) AS going_out, 
-                    CONCAT(YEAR(time),'-',MONTH(time),'-',DAY(time)) AS date 
-                FROM 
-                    PeopleCounts";
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $begin = $_POST['start_date'];
-                $end = $_POST['end_date'];
-                $sql = $sql." WHERE time >= '".$begin."' AND time <= '".$end."'";
-            }
-
-            $sql = $sql." GROUP BY date";
-
-            $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
-            $result = $rs->fetchAll();
-
-            $resultCounts = AnalyzeQuery($sql);
-        ?>
     </head>
     <body>
         <?php HtmlNavbar('charts'); ?>

@@ -89,6 +89,45 @@ SQL;
 }
 
 //-------------------------------------------------------
+// Name: GetDayData
+// PostCondition: Return data and analysis on a day basis
+//---------------------------------------------------------
+function GetDayData($start, $end)
+{
+    global $COMMON;
+    $whereStatement = '';
+
+    if(isset($start) && isset($end)) {
+        $whereStatement = <<< SQL
+            WHERE time >= '{$start}' AND time <= '{$end}'
+SQL;
+    }
+
+    $sql = <<< SQL
+        SELECT
+        COUNT(DISTINCT id) AS count,
+        SUM(
+            CASE WHEN entering = 'true'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_in,
+        SUM(
+            CASE WHEN entering = 'false'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_out,
+        DATE_FORMAT(time, '%Y-%m-%d') AS date
+    FROM `PeopleCounts`
+    {$whereStatement}
+    GROUP BY date
+    ORDER BY date ASC
+SQL;
+
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    return array($rs->fetchAll(), AnalyzeQuery($sql));
+}
+
+//-------------------------------------------------------
 // Name: GetWeekData
 // PostCondition: Return data and analysis on a week basis
 //---------------------------------------------------------
@@ -117,6 +156,45 @@ SQL;
             ELSE 0 END
         )                  AS going_out,
         DATE_FORMAT(time, '%Y-%U') AS date
+    FROM `PeopleCounts`
+    {$whereStatement}
+    GROUP BY date
+    ORDER BY date ASC
+SQL;
+
+    $rs = $COMMON->executeQuery($sql, $_SERVER["SCRIPT_NAME"]);
+    return array($rs->fetchAll(), AnalyzeQuery($sql));
+}
+
+//-------------------------------------------------------
+// Name: GetMonthData
+// PostCondition: Return data and analysis on a month basis
+//---------------------------------------------------------
+function GetMonthData($start, $end)
+{
+    global $COMMON;
+    $whereStatement = '';
+
+    if(isset($start) && isset($end)) {
+        $whereStatement = <<< SQL
+            WHERE time >= '{$start}' AND time <= '{$end}'
+SQL;
+    }
+
+    $sql = <<< SQL
+        SELECT
+        COUNT(DISTINCT id) AS count,
+        SUM(
+            CASE WHEN entering = 'true'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_in,
+        SUM(
+            CASE WHEN entering = 'false'
+                THEN 1
+            ELSE 0 END
+        )                  AS going_out,
+        DATE_FORMAT(time, '%Y-%m') AS date
     FROM `PeopleCounts`
     {$whereStatement}
     GROUP BY date
