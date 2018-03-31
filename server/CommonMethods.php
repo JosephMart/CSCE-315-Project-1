@@ -9,9 +9,9 @@ class Common
 
     var $db="database.cse.tamu.edu";
     # USER SPECIFIC DATA
-    var $dbname="josephmart";
-    var $user="josephmart";
-    var $pass="martinsen";
+    var $dbname="XXXXXX";
+    var $user="XXXXXX";
+    var $pass="XXXXXX";
 
     function Common($debug)
     {

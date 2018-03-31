@@ -5,7 +5,7 @@
 import logging
 from typing import List, Dict
 
-SERVER_API: str = 'http://projects.cse.tamu.edu/josephmart/p1/api'
+SERVER_API: str = 'http://projects.cse.tamu.edu/XXXXXX/p1/api'
 
 # Endpoints on server
 ENDPOINTS: Dict[str, str] = {

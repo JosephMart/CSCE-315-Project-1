@@ -18,7 +18,7 @@ class Logger
     public function __construct()
     {
         # USER SPECIFIC DATA
-        $logDirectory = '/home/ugrads/j/josephmart/web_project/log';
+        $logDirectory = '~/web_project/log';
         date_default_timezone_set('America/Chicago');
         $logDirectory = rtrim($logDirectory, DIRECTORY_SEPARATOR);
         $this->logFilename = '/log_' . date('d-M-Y') . '.log';
