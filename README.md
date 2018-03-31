@@ -1,10 +1,6 @@
 # CSCE-315-Project-1
 
-Currently located at [here](http://projects.cse.tamu.edu/josephmart/p1/)
-
-Due to not being able to install PHP packages on TAMU server there are
-three places to change data to run on your server. They are commented
-with `# USER SPECIFIC DATA`.
+Due to not being able to install PHP packages and not able to get .env files working on TAMU server there are three places to change data to run on your server. They are commented with `# USER SPECIFIC DATA` in the project.
 
 * `CommonMethods.php`
 	* $dbname
@@ -13,7 +9,7 @@ with `# USER SPECIFIC DATA`.
 * `Logger.php`
 	* $logDirectory (may need to chmod 777 this file once it is created the frist time)
 * `Constants.py`
-	* SERVER_API
+	* SERVER_API this is the endpoint in this case on the server)
 
 ## Dependencies
 
@@ -41,7 +37,7 @@ make deploy # Deploy server code to TAMU server
 ### SQL To Create Table
 
 ```sql
-USE josephmart;
+USE DB_NAME;
 CREATE TABLE IF NOT EXISTS `PeopleCounts` (
   `id` int(10) unsigned NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -53,11 +49,6 @@ ALTER TABLE `PeopleCounts`
 
 ALTER TABLE `PeopleCounts`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
--- CREATE TABLE IF NOT EXISTS `PeopleCounts` (
---   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
---   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `entering` enum('false','true') NOT NULL DEFAULT 'true'
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ALTER TABLE `PeopleCounts`
   ADD PRIMARY KEY (`id`);
@@ -88,4 +79,38 @@ This will clear all data in table and set increment back to 1.
 
 ```bash
 curl -X DELETE http://projects.cse.tamu.edu/NETID/p1/api/Reset.php
+```
+
+## Arduino Setup
+
+Once you have installed the dependencies listed below, you will need to load the Arduino Firmware.
+
+If you are not able to install with the makefile, do the following
+```
+certifi==2018.1.18
+chardet==3.0.4
+future==0.16.0
+idna==2.6
+iso8601==0.1.12
+numpy==1.14.2
+PyMata==2.17
+pymata-aio==2.19
+pyserial==2.7
+PyYAML==3.12
+requests==2.18.4
+urllib3==1.22
+websockets==4.0.1
+```
+
+If you are not able to install with the makefile, do the following
+```
+cd arduino
+pip install -r requirements.txt
+```
+
+Firmware is FirmataPlus. How to install the 3rd party package can be found https://github.com/MrYsLab/pymata-aio/wiki/Uploading-FirmataPlus-to-Arduino
+
+Once loaded, run the program!
+```
+python3 arduino/main.py
 ```
