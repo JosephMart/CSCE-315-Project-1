@@ -123,6 +123,8 @@ class Board:
                     Api.increment(False)
             left_sensor.timestamp = right_sensor.timestamp = datetime.now()
 
+    # Begin Application Program Interface for Python <--> Arduino Interactions
+
     def add_ultrasonic(self, trig_pin: int, echo_pin: int, cb: Callable[[List[int]], None] = default_sonic_cb):
         """
         Instantiate an ultrasonic sensor with the board
@@ -188,6 +190,7 @@ class Board:
         while True:
             self.sleep()
 
+# Private Helper class for Board
 class UltraSonic:
     # MAX_timestamps_FIX: int = 10
     ACCEPTABLE_TIME_DELTA: timedelta = timedelta(seconds=1.5)
