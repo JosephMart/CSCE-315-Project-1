@@ -41,6 +41,8 @@ def increment(entering: bool = True, printResponse: bool = False) -> None:
     Hit increment endpoint on the server which will increment the table
 
     Keyword Arguments:
+        entering {bool} -- sent to the server info on if the increment should be
+                            entering (True) or leaving (False)
         printResponse {bool} -- print server response if True (default: {False})
     """
     params = {u'entering': 'true' if entering else 'false'}
