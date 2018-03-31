@@ -5,8 +5,8 @@ import asyncio
 from pymata_aio.pymata3 import PyMata3
 
 
-class TestApi(unittest.TestCase):
-    '''Test Api Module'''
+class TestArduino(unittest.TestCase):
+    '''Test Arduino Module'''
 
     def setUp(self):
         pass
