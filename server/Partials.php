@@ -155,8 +155,8 @@ function AnalysisTable($counts) {
             <tbody>
                 <tr>
                     <td>{$counts["averageIn"]}</td>
-                    <td>-1</td>
-                    <td>-1</td>
+                    <td>{$counts["medianIn"]}</td>
+                    <td>{$counts["modeIn"]}</td>
                     <td>{$counts["maxIn"]}</td>
                     <td>{$counts["minIn"]}</td>
                     <td>{$counts["totalIn"]}</td>
@@ -180,8 +180,8 @@ function AnalysisTable($counts) {
             <tbody>
                 <tr>
                     <td>{$counts["averageOut"]}</td>
-                    <td>-1</td>
-                    <td>-1</td>
+                    <td>{$counts["medianOut"]}</td>
+                    <td>{$counts["modeOut"]}</td>
                     <td>{$counts["maxOut"]}</td>
                     <td>{$counts["minOut"]}</td>
                     <td>{$counts["totalOut"]}</td>

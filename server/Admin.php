@@ -27,8 +27,7 @@ if (isset($_POST["exit"])) {
 }
 
 if (isset($_POST["reset"])) {
-    echo 'delete';
-    // ResetDb();
+    ResetDb();
 }
 ?>
 <!DOCTYPE HTML>
