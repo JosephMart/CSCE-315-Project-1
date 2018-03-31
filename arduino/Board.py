@@ -120,7 +120,7 @@ class Board:
                 log.info(msg)
                 print(msg)
                 if Board.POST_DATA:
-                    Api.increment(True)
+                    Api.increment(False)
             left_sensor.timestamp = right_sensor.timestamp = datetime.now()
 
     def add_ultrasonic(self, trig_pin: int, echo_pin: int, cb: Callable[[List[int]], None] = default_sonic_cb):

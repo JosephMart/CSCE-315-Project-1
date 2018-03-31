@@ -15,11 +15,17 @@ class TestApi(unittest.TestCase):
         '''
         self.assertEqual(reset(), '{"status":"success"}')
     
-    def testIncrement(self):
+    def testEntering(self):
         '''
-        Test Increment Endpoint from Arduino Python Code
+        Test Increment entering Endpoint from Arduino Python Code
         '''
-        self.assertEqual(increment(), '{"status":"success"}')
+        self.assertEqual(increment(True), '{"status":"success"}')
+
+    def testExit(self):
+        '''
+        Test Increment exeting Endpoint from Arduino Python Code
+        '''
+        self.assertEqual(increment(False), '{"status":"success"}')
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

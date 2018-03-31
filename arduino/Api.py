@@ -36,14 +36,14 @@ def reset(printResponse: bool = False) -> None:
     return response.text
 
 
-def increment(printResponse: bool = False) -> None:
+def increment(entering: bool = True, printResponse: bool = False) -> None:
     """
     Hit increment endpoint on the server which will increment the table
 
     Keyword Arguments:
         printResponse {bool} -- print server response if True (default: {False})
     """
-    params = {u'secret': 69}
+    params = {u'entering': 'true' if entering else 'false'}
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.post(SERVER_API + ENDPOINTS['INCREMENT'], data=params)
     if printResponse: print(response.text)
